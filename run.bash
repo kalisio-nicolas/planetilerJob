@@ -2,10 +2,15 @@
 set -euo pipefail
 
 # Global variables
-AREA="planet"
-FILENAME="${AREA}-$(date +%d-%m-%Y).mbtiles"
-S3_PATH="ovh:kargo/data/MBTiles"
+if [[ -z "${AREA}" ]]; then
+    AREA="planet"
+fi
 
+if [[ -z "${S3_PATH}" ]]; then
+    S3_PATH="ovh:kargo/data/MBTiles"
+fi
+
+FILENAME="${AREA}-$(date +%d-%m-%Y).mbtiles"
 
 
 # Install rclone curl  wget and openjdk-21-jdk
@@ -31,8 +36,10 @@ if [[ ! -f "./rclone.dec.conf" || ! -f "./SLACK_WEBHOOK.dec.env" ]]; then
     sops --decrypt --output "./SLACK_WEBHOOK.dec.env" "./SLACK_WEBHOOK.enc.env"
 fi
 
-# Load the environment variables
-source ./SLACK_WEBHOOK.dec.env
+# Load the environment variables if WEBHOOK_URL is not set
+if [[ -z "${WEBHOOK_URL}" ]]; then
+    source ./SLACK_WEBHOOK.dec.env
+fi
 
 
 # Function to send a message to Slack
@@ -46,7 +53,7 @@ notify_slack() {
                 {
                     \"color\": \"$color\",
                     \"title\": \"Planetiler job\",
-                    \"text\": \"(test)$message\"
+                    \"text\": \"$message\"
                 }
             ]
         }" || true

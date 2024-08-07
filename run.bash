@@ -2,13 +2,8 @@
 set -euo pipefail
 
 # Global variables
-if [[ -z "${AREA}" ]]; then
-    AREA="planet"
-fi
-
-if [[ -z "${S3_PATH}" ]]; then
-    S3_PATH="ovh:kargo/data/MBTiles"
-fi
+AREA="${AREA:-planet}"
+S3_PATH="${S3_PATH:-ovh:kargo/data/MBTiles}"
 
 FILENAME="${AREA}-$(date +%d-%m-%Y).mbtiles"
 
@@ -37,10 +32,10 @@ if [[ ! -f "./rclone.dec.conf" || ! -f "./SLACK_WEBHOOK.dec.env" ]]; then
 fi
 
 # Load the environment variables if WEBHOOK_URL is not set
-if [[ -z "${WEBHOOK_URL}" ]]; then
+WEBHOOK_URL="${WEBHOOK_URL:-}"
+if [[ -z "${WEBHOOK_URL}" && -f "./SLACK_WEBHOOK.dec.env" ]]; then
     source ./SLACK_WEBHOOK.dec.env
 fi
-
 
 # Function to send a message to Slack
 notify_slack() {

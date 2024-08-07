@@ -1,0 +1,31 @@
+.kaptain/
+node_modules/
+
+# Visual code
+.vscode
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archvied charts
+*/charts
+*.tgz
+requirements.lock
+Chart.lock
+
+# Helmfile
+helmfile.lock
+
+# Decrypted files
+*.dec.*
+
+
+planetiler.jar
+io-data
+data
+rclone-logs
+*.mbtiles

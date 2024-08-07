@@ -1,0 +1,27 @@
+# This file is only used to _encrypt_ secrets. It defines who will be able to decrypt the secrets.
+# Each recipîent is the public key of an allowed developer.
+# For reference:
+#   - robin:      age1q8x3cqsjg3cvmzfttawdx20s8zm62ngtna0lnq6ehz9xwf2gq4xs56ap6a
+#   - luc:        age1ver3xrdzljpy2q6trgcf46mek3qsvtvzurv48hjkwfsg7ndf5p0s6hvztr
+#   - christophe: age19mhzgawz054672rhsjs7654u6455jggghs2kur52zmykaap9wdgq34zw3u
+#   - tristan:    age1mh5vmdxplyuzzc4pqld84rksqt7t5w693l9r3kvusya4gncjuy3qzgcuvq
+#   - adrien:     age1r2zsv0n0t47c0fnvmq8fx66lumzhqc7z00j792p7965xmc284ccqg90kn8
+#   - nicolas:    age1ww7j7n3rw37tva4gvrc5n0ldnd0nwrqcxtkasnmrhj38zsymsuusasadyn
+#   - melanie:    age1qkq0utexn4klr6u4xdms9jpve8t5x7k3qdrd3ysrz5jnm6w0s4cq3n039a
+#   - travis-ci:  age1s20jhqjvf279ljmthxuvaj4uhm0y9przzs5ty7uhmjtv5u4nrens5ztagm
+#   - github-ci:  age1wv5mslw0sy47h66d9c3y9u5n0dj85wyp88y4ayjx2al997l33ums8qg0g6
+creation_rules:
+  # recipients for everything else
+  - age: >
+      age1q8x3cqsjg3cvmzfttawdx20s8zm62ngtna0lnq6ehz9xwf2gq4xs56ap6a,
+      age1ver3xrdzljpy2q6trgcf46mek3qsvtvzurv48hjkwfsg7ndf5p0s6hvztr,
+      age19mhzgawz054672rhsjs7654u6455jggghs2kur52zmykaap9wdgq34zw3u,
+      age1mh5vmdxplyuzzc4pqld84rksqt7t5w693l9r3kvusya4gncjuy3qzgcuvq,
+      age1r2zsv0n0t47c0fnvmq8fx66lumzhqc7z00j792p7965xmc284ccqg90kn8,
+      age1ww7j7n3rw37tva4gvrc5n0ldnd0nwrqcxtkasnmrhj38zsymsuusasadyn,
+      age1qkq0utexn4klr6u4xdms9jpve8t5x7k3qdrd3ysrz5jnm6w0s4cq3n039a,
+      age1s20jhqjvf279ljmthxuvaj4uhm0y9przzs5ty7uhmjtv5u4nrens5ztagm,
+      age1wv5mslw0sy47h66d9c3y9u5n0dj85wyp88y4ayjx2al997l33ums8qg0g6
+  # - path_regex: .*.(yaml|yml)
+  #   encrypted_regex: ^(data|stringData)$
+  #   age: ''

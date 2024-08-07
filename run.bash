@@ -12,23 +12,24 @@ S3_PATH="ovh:kargo/data/MBTiles"
 sudo apt-get update
 sudo apt-get install -y rclone curl wget openjdk-21-jdk
 
-# Install sops
-curl -LO https://github.com/getsops/sops/releases/download/v3.9.0/sops-v3.9.0.linux.amd64 && chmod +x sops-v3.9.0.linux.amd64 && sudo mv sops-v3.9.0.linux.amd64 /usr/local/bin/sops
+# Install sops if the decrypted files don't exist
+if [[ ! -f "./rclone.dec.conf" || ! -f "./SLACK_WEBHOOK.dec.env" ]]; then
+    curl -LO https://github.com/getsops/sops/releases/download/v3.9.0/sops-v3.9.0.linux.amd64 && chmod +x sops-v3.9.0.linux.amd64 && sudo mv sops-v3.9.0.linux.amd64 /usr/local/bin/sops
 
+    # Ask for the sops key of a worker
+    echo "Please enter the SOPS key of a worker to decrypt the rclone configuration file"
+    echo "Your SOPS key should be in "\$DEVELOPMENT_DIR/age/keys.txt" on your local machine"
+    echo "It begins with 'AGE-SECRET-KEY-XXXXX...'"
+    read -s -p "Enter a compatible SOPS key: " SOPS_AGE_KEY
+    echo
 
-# ask for the sops key of a worker
-echo "Please enter the SOPS key of a worker to decrypt the rclone configuration file"
-echo "Your SOPS key should be in "\$DEVELOPMENT_DIR/age/keys.txt" on your local machine"
-echo "It begins with 'AGE-SECRET-KEY-XXXXX...'"
-read -s -p "Enter a compatible SOPS key: " SOPS_AGE_KEY
-echo
+    # Export the key so that it is available for the following commands
+    export SOPS_AGE_KEY
 
-# Export the key so that it is available for the following commands
-export SOPS_AGE_KEY
-
-# Decrypt the rclone configuration file
-sops --decrypt  --output "./rclone.dec.conf" "./rclone.enc.conf"
-sops --decrypt  --output "./SLACK_WEBHOOK.dec.env" "./SLACK_WEBHOOK.enc.env"
+    # Decrypt the rclone configuration file
+    sops --decrypt --output "./rclone.dec.conf" "./rclone.enc.conf"
+    sops --decrypt --output "./SLACK_WEBHOOK.dec.env" "./SLACK_WEBHOOK.enc.env"
+fi
 
 # Load the environment variables
 source ./SLACK_WEBHOOK.dec.env

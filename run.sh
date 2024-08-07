@@ -3,6 +3,7 @@ set -euo pipefail
 
 # Global variables
 AREA="${AREA:-planet}"
+SOPS_AGE_KEY="${SOPS_AGE_KEY:-}"
 S3_PATH="${S3_PATH:-ovh:kargo/data/MBTiles}"
 
 FILENAME="${AREA}-$(date +%d-%m-%Y).mbtiles"
@@ -16,15 +17,15 @@ sudo apt-get install -y rclone curl wget openjdk-21-jdk
 if [[ ! -f "./rclone.dec.conf" || ! -f "./SLACK_WEBHOOK.dec.env" ]]; then
     curl -LO https://github.com/getsops/sops/releases/download/v3.9.0/sops-v3.9.0.linux.amd64 && chmod +x sops-v3.9.0.linux.amd64 && sudo mv sops-v3.9.0.linux.amd64 /usr/local/bin/sops
 
-    # Ask for the sops key of a worker
-    echo "Please enter the SOPS key of a worker to decrypt the rclone configuration file"
-    echo "Your SOPS key should be in "\$DEVELOPMENT_DIR/age/keys.txt" on your local machine"
-    echo "It begins with 'AGE-SECRET-KEY-XXXXX...'"
-    read -s -p "Enter a compatible SOPS key: " SOPS_AGE_KEY
-    echo
+    # if the SOPS_AGE_KEY is not set, ask for it
+    if [[ -z "${SOPS_AGE_KEY}" ]]; then
+        echo "Please enter the SOPS key of a worker to decrypt the rclone configuration file"
+        echo "Your SOPS key should be in "\$DEVELOPMENT_DIR/age/keys.txt" on your local machine"
+        echo "It begins with 'AGE-SECRET-KEY-XXXXX...'"
+        read -s -p "Enter a compatible SOPS key: " SOPS_AGE_KEY
+        echo
 
-    # Export the key so that it is available for the following commands
-    export SOPS_AGE_KEY
+    fi
 
     # Decrypt the rclone configuration file
     sops --decrypt --output "./rclone.dec.conf" "./rclone.enc.conf"
@@ -36,7 +37,6 @@ WEBHOOK_URL="${WEBHOOK_URL:-}"
 if [[ -z "${WEBHOOK_URL}" && -f "./SLACK_WEBHOOK.dec.env" ]]; then
     source ./SLACK_WEBHOOK.dec.env
 fi
-
 # Function to send a message to Slack
 notify_slack() {
     local message="$1"

@@ -6,17 +6,24 @@ Download and process OSM pbfs from Geofabrik for a given area and upload the res
 
 There are two variables that can be changed in this project:
 
-- `AREA`: This variable defines the area to download and process. The default value is `planet`. The value can be changed to any area available in the Geofabrik website.
-- `S3_PATH`: This variable specifies the S3 path to upload the mbtiles file. The default value is `ovh:kargo/data/MBTiles` 
-- `WEBHOOK_URL`: This variable specifies the webhook URL for the project. The default value is in the secrets file. it can be overridden to any other value.
+| Variable     | Description                                                                                     | Default Value                  |
+|--------------|-------------------------------------------------------------------------------------------------|--------------------------------|
+| `AREA`       | This variable defines the area to download and process. The default value is `planet`.         | `planet`                       |
+| `S3_PATH`    | This variable specifies the S3 path to upload the mbtiles file. The default value is `ovh:kargo/data/MBTiles`. | `ovh:kargo/data/MBTiles`       |
+| `WEBHOOK_URL`| This variable specifies the webhook URL for the project. The default value is in the secrets file and can be overridden. | Secrets file value |
+| `SOPS_AGE_KEY`| This variable specifies the SOPS age key. It will be prompted during the program execution if the secrets files are encrypted. To avoid waiting for the prompt, you can directly set this variable in the environment. | None |
 
 ## Running the Project
 
 
 ### ⚠️ Requirements ⚠️
-You will be asked for a SOPS key if the secrets files are encrypted. 
-Your SOPS key should be in `$DEVELOPMENT_DIR/age/keys.txt` on your local machine
-It begins with
+You will need a AGE SOPS key to decrypt the secrets file in case they are still encrypted.
+
+Wait for the prompt to enter the key or set the `SOPS_AGE_KEY` variable in the environment.
+
+Your SOPS key should be in `$DEVELOPMENT_DIR/age/keys.txt` on your local machine.
+
+The key should look like this:
 ```
 AGE-SECRET-KEY-XXXXX...
 ```
@@ -38,5 +45,5 @@ cd planetilerJob
 Fast one-liner (if no need to change the variables):
 
 ```bash
-git clone https://github.com/kalisio-nicolas/planetilerJob && cd planetilerJob && ./run.bash
+git clone https://github.com/kalisio-nicolas/planetilerJob && cd planetilerJob && ./run.sh
 ```

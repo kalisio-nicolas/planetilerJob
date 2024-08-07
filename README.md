@@ -15,6 +15,7 @@ There are two variables that can be changed in this project:
 
 ## Running the Project
 
+This project should be run in a Linux environment as root (or with sudo) to install the necessary dependencies.
 
 ### ⚠️ Requirements ⚠️
 You will need a AGE SOPS key to decrypt the secrets file in case they are still encrypted.

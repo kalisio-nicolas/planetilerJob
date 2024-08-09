@@ -88,6 +88,16 @@ rclone copy --progress --stats-one-line --stats=5s --config=./rclone.dec.conf ${
 notify_slack "The Planetiler job has completed for the region *${AREA}*." "good"
 
 
+#delete the mbtiles file and data folder after the job is done
+#can be opt out by setting the KEEP_DATA env variable to true
+KEEP_DATA="${KEEP_DATA:-false}"
+if [[ "${KEEP_DATA}" == "false" ]]; then
+    rm -rf ${FILENAME}
+    rm -rf data
+fi
+
+
+
 # shutdown the instance after the job is done
 # can be opt out by setting the SHUTDOWN env variable to false
 SHUTDOWN="${SHUTDOWN:-true}"

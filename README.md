@@ -13,6 +13,7 @@ There are two variables that can be changed in this project:
 | `WEBHOOK_URL`| This variable specifies the webhook URL for the project. The default value is in the secrets file and can be overridden. | Secrets file value |
 | `SOPS_AGE_KEY`| This variable specifies the SOPS age key. It will be prompted during the program execution if the secrets files are encrypted. To avoid waiting for the prompt, you can directly set this variable in the environment. | None |
 | `SHUTDOWN`   | This variable specifies if the instance should be shut down after the job is done. The default value is `true`. | `true` |
+| `KEEP_DATA`  | This variable specifies if the data should be kept after the job is done. The default value is `false`. | `false` |
 
 ## Running the Project
 
@@ -40,6 +41,8 @@ cd planetilerJob
 # export AREA=planet
 # export S3_PATH=ovh:kargo/data/MBTiles
 # export WEBHOOK_URL=https://hooks.slack.com/services/no-webhooks
+# export SHUTDOWN=true
+# export KEEP_DATA=false
 
 # Run the project
 ./run.sh

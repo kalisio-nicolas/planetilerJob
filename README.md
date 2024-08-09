@@ -12,10 +12,13 @@ There are two variables that can be changed in this project:
 | `S3_PATH`    | This variable specifies the S3 path to upload the mbtiles file. The default value is `ovh:kargo/data/MBTiles`. | `ovh:kargo/data/MBTiles`       |
 | `WEBHOOK_URL`| This variable specifies the webhook URL for the project. The default value is in the secrets file and can be overridden. | Secrets file value |
 | `SOPS_AGE_KEY`| This variable specifies the SOPS age key. It will be prompted during the program execution if the secrets files are encrypted. To avoid waiting for the prompt, you can directly set this variable in the environment. | None |
+| `SHUTDOWN`   | This variable specifies if the instance should be shut down after the job is done. The default value is `true`. | `true` |
 
 ## Running the Project
 
-This project should be run in a Linux environment as root (or with sudo) to install the necessary dependencies.
+This project should be run in a Linux environment as root (NOT as sudo as this will cause issues with the environment variables).
+This project is intended to be used by the Kalisio company, with their specific development environment.
+
 
 ### ⚠️ Requirements ⚠️
 You will need a AGE SOPS key to decrypt the secrets file in case they are still encrypted.

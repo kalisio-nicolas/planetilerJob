@@ -49,6 +49,7 @@ if [[ ! -f "./rclone.dec.conf" || ! -f "./SLACK_WEBHOOK.dec.env" ]]; then
     curl -LO https://github.com/getsops/sops/releases/download/v3.9.0/sops-v3.9.0.linux.amd64 && chmod +x sops-v3.9.0.linux.amd64 &&  mv sops-v3.9.0.linux.amd64 /usr/local/bin/sops
 
     # If the SOPS_AGE_KEY is not set, ask for it
+    echo "SOPS_AGE_KEY: ${SOPS_AGE_KEY}"
     if [[ -z "${SOPS_AGE_KEY}" ]]; then
         echo "Please enter the SOPS key of a worker to decrypt the rclone configuration file"
         echo "Your SOPS key should be in \"\$DEVELOPMENT_DIR/age/keys.txt\" on your local machine"
@@ -85,3 +86,11 @@ rclone copy --progress --stats-one-line --stats=5s --config=./rclone.dec.conf ${
 
 # Send a success notification
 notify_slack "The Planetiler job has completed for the region *${AREA}*." "good"
+
+
+# shutdown the instance after the job is done
+# can be opt out by setting the SHUTDOWN env variable to false
+SHUTDOWN="${SHUTDOWN:-true}"
+if [[ "${SHUTDOWN}" == "true" ]]; then
+    shutdown -h now
+fi
